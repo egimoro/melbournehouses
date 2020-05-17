@@ -194,17 +194,15 @@ class HouseSearch(Resource):
     def get(self, hsetype):
         hsetype = House.query.filter(House.hsetype.ilike('%'+hsetype+'%')).all()
         result = houses_schema.dump(hsetype)
-        if result is None:
-            print('Nothing found')
+        
         return {'House type searched': result, 'Number of results': len(result)}
     
 
 class LocationSearch(Resource):
     def get(self, address):
-        address = House.query.filter(Location.address.ilike('%'+address+'%')).all()
+        address = Location.query.filter(Location.address.ilike('%'+address+'%')).all()
         result = locations_schema.dump(address)
-        if result is None:
-            print('Nothing found')
+       
         return {'Address searched': result, 'Number of results': len(result)}
 
 
@@ -213,8 +211,8 @@ api.add_resource(HouseList, '/api/houses')
 api.add_resource(HouseRes, '/api/houses/<string:pk>')
 api.add_resource(LocationList, '/api/locations')     
 api.add_resource(LocationRes, '/api/locations/<string:pk>') 
-api.add_resource(HouseSearch, '/api/houses/<hsetype:string>')
-api.add_resource(LocationSearch, '/api/locations/<address:string>')
+api.add_resource(HouseSearch, '/api/houses/search/<string:hsetype>')   
+api.add_resource(LocationSearch, '/api/locations/search/<string:address>')   
 
 if __name__ == '__main__':
     app.run(debug=True)
