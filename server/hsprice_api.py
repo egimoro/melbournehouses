@@ -1,5 +1,4 @@
 import os
-import re
 
 from flask import Flask, request, abort
 from flask_sqlalchemy import SQLAlchemy
@@ -201,7 +200,12 @@ class HouseSearch(Resource):
     
 
 class LocationSearch(Resource):
-    def get(self, )
+    def get(self, address):
+        address = House.query.filter(Location.address.ilike('%'+address+'%')).all()
+        result = locations_schema.dump(address)
+        if result is None:
+            print('Nothing found')
+        return {'Address searched': result, 'Number of results': len(result)}
 
 
 api.add_resource(HelloMeBourne, '/')     
@@ -210,6 +214,7 @@ api.add_resource(HouseRes, '/api/houses/<string:pk>')
 api.add_resource(LocationList, '/api/locations')     
 api.add_resource(LocationRes, '/api/locations/<string:pk>') 
 api.add_resource(HouseSearch, '/api/houses/<hsetype:string>')
+api.add_resource(LocationSearch, '/api/locations/<address:string>')
 
 if __name__ == '__main__':
     app.run(debug=True)
