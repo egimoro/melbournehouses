@@ -63,7 +63,7 @@ location_schema = LocationSchema()
 locations_schema = LocationSchema(many=True)
 
 
-class HelloMeBourne(Resource):
+class HelloMeBourne(Resource):  
     def get(self):
         return {'hello': 'Melbourne'}
 
